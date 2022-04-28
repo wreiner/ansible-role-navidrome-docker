@@ -1,0 +1,15 @@
+---
+- name: "Create navidrome docker container"
+  community.docker.docker_container:
+    name: "navidrome"
+    image: "deluan/navidrome:{{ navidrome_docker__navidrome_version | d(latest) }}"
+    state: "started"
+    restart: "yes"
+    env:
+      ND_LOGLEVEL: "info"
+    published_ports:
+      - "{{ navidrome__listen_address }}:38084:4533"
+    volumes:
+      - "/var/lib/docker/volumes/navidrome/music:/music"
+      - "/var/lib/docker/volumes/navidrome/data:/data"
+    restart_policy: "unless-stopped"
